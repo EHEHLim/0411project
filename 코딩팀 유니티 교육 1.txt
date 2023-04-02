@@ -1,0 +1,43 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMove : MonoBehaviour
+{
+    //컴포넌트를 받을 변수 선언
+    public Transform tr;
+    private Rigidbody2D rb;
+    
+    //코드 관련 변수 선언
+    public float moveSpeed = 10f;
+    public float jumpPower = 10f;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        //선언해둔 변수에 컴포넌트 추출 후 대입
+        tr = GetComponent<Transform>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //GetKey와 GetKeyDown의 차이점 
+        //GetKey는 프레임마다 true 반환, GetKeyDown은 최초 입력된 한프레임만 true 반환
+        if (Input.GetKey(KeyCode.LeftArrow)) 
+        {
+            tr.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            tr.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //rigidbody2d의 Addforce 함수를 이용해 충격을 가함
+	//변수명.AddForce(new Vector3(가할 방향및 충격량),ForceMode2D.충격종류);
+            rb.AddForce(new Vector3(0, jumpPower, 0), ForceMode2D.Impulse);
+        }
+    }
+}
