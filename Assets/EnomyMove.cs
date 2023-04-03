@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnomyMove : MonoBehaviour
 {
-    public bool canUp = true;
-    public bool canDown = true;
     public GameObject ball;
+    private float moveSpeed = 5f;
+    public bool setEnd = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,8 +14,18 @@ public class EnomyMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x, ball.GetComponent<Transform>().position.y, 0); 
+        if (ball.GetComponent<Ball>().direction == 1 && GameObject.Find("GameManager").GetComponent<GameManager>().canSetStart == false)
+        {
+            if (ball.GetComponent<Transform>().position.y > transform.position.y)
+            {
+                transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+            }
+            else
+            {
+                transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+            }
+        }
     }
 }

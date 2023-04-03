@@ -6,8 +6,7 @@ public class Ball : MonoBehaviour
 {
     public float moveSpeed = 10f;
     public float radi;
-    private int xDirection = 1;
-    private int yDirection = 1;
+    public int direction = 1;
 
     private Transform tr;
 
@@ -23,6 +22,14 @@ public class Ball : MonoBehaviour
                 continue;
             }
             tr.eulerAngles += new Vector3(0, 0, rd);
+            if((rd < 65 && rd > 0) || (rd > -65 && rd < 0))
+            {
+                direction = 1;
+            }
+            else
+            {
+                direction = -1;
+            }
             break;
         }
         
@@ -43,10 +50,11 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        tr.eulerAngles = new Vector3(0, 0, 180 - tr.eulerAngles.z);
         
         if (collision.name == "Player")
         {
+            direction = 1;
+            tr.eulerAngles = new Vector3(0, 0, Random.Range(-65, 65));
             if (collision.gameObject.GetComponent<PlayerMove>().isParring)
             {
                 moveSpeed = 30f;
@@ -56,9 +64,25 @@ public class Ball : MonoBehaviour
                 moveSpeed = 10f;
             }
         }
+
         if (collision.name == "Enomy")
         {
+            direction = -1;
+            tr.eulerAngles = new Vector3(0, 0, Random.Range(115, 245));
             moveSpeed = 10f;
+        }
+
+        if(collision.name == "PlayerScore")
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().PlayerScore++;
+            GameObject.Find("GameManager").GetComponent<GameManager>().canSetStart = true;
+            Destroy(gameObject);
+        }
+        if (collision.name == "EnomyScore")
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().EnomyScore++;
+            GameObject.Find("GameManager").GetComponent<GameManager>().canSetStart = true;
+            Destroy(gameObject);
         }
     }
 }
