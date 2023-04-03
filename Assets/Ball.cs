@@ -44,5 +44,21 @@ public class Ball : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         tr.eulerAngles = new Vector3(0, 0, 180 - tr.eulerAngles.z);
+        
+        if (collision.name == "Player")
+        {
+            if (collision.gameObject.GetComponent<PlayerMove>().isParring)
+            {
+                moveSpeed = 30f;
+            }
+            else
+            {
+                moveSpeed = 10f;
+            }
+        }
+        if (collision.name == "Enomy")
+        {
+            moveSpeed = 10f;
+        }
     }
 }
