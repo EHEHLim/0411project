@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float moveSpeed = 10f;
+    public float moveSpeed = 15f;
     public float radi;
     public int direction = 1;
 

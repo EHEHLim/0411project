@@ -10,13 +10,38 @@ public class GameManager : MonoBehaviour
     private int enomyScore = 0;
     public bool canSetStart = true;
     public TextMeshProUGUI txt;
+    private bool isPlayerWin = true;
+    private static GameManager instance = null;
 
     // Start is called before the first frame update
     private void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
         StartCoroutine(Score());
         StartCoroutine(Game());
     }
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (null == instance)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -33,6 +58,17 @@ public class GameManager : MonoBehaviour
         if(playerScore < 5 && enomyScore < 5)
         {
             StartCoroutine(Game());
+        }
+        else
+        {
+            if(playerScore == 5)
+            {
+                isPlayerWin = true;
+            }
+            else
+            {
+                isPlayerWin = false;
+            }
         }
     }
 
