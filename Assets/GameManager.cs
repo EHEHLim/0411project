@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +12,9 @@ public class GameManager : MonoBehaviour
     private int enomyScore = 0;
     public bool canSetStart = true;
     public TextMeshProUGUI txt;
-    private bool isPlayerWin = true;
+    public bool isPlayerWin = true;
     private static GameManager instance = null;
+    private bool isFading = false;
 
     // Start is called before the first frame update
     private void Awake()
@@ -26,8 +29,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        StartCoroutine(Score());
-        StartCoroutine(Game());
+        
+        
     }
 
     public static GameManager Instance
@@ -42,14 +45,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsFading
+    {
+        get { return isFading; }
+    }
+
     // Update is called once per frame
     void Update()
     {
         
     }
 
-    IEnumerator Game()
+    public IEnumerator Game()
     {
+        yield return new WaitUntil(() => isFading == false);
         GameObject.Find("Enomy").GetComponent<EnomyMove>().ball = Instantiate(ball, new Vector3(0, 0, 0), ball.GetComponent<Transform>().rotation);
         canSetStart = false;
         yield return new WaitUntil(() => canSetStart == true);
@@ -69,10 +78,37 @@ public class GameManager : MonoBehaviour
             {
                 isPlayerWin = false;
             }
+            StartCoroutine(FadeOut(GameObject.Find("Panel").GetComponent<RawImage>()));
+            yield return new WaitUntil(() => (IsFading == false));
+            SceneManager.LoadScene("Ending");
         }
     }
 
-    IEnumerator Score()
+    public IEnumerator FadeIn(RawImage panel)
+    {
+        isFading = true;
+        panel.color = new Color(0f, 0f, 0f, 1f);
+        while(panel.color.a > 0f)
+        {
+            panel.color -= new Color(0, 0, 0, 0.03f);
+            yield return new WaitForSeconds(0.01f);
+        }
+        isFading = false;
+    }
+
+    public IEnumerator FadeOut(RawImage panel)
+    {
+        isFading = true;
+        panel.color = new Color(0f, 0f, 0f, 0f);
+        while (panel.color.a < 1f)
+        {
+            panel.color += new Color(0, 0, 0, 0.03f);
+            yield return new WaitForSeconds(0.01f);
+        }
+        isFading = false;
+    }
+
+    public IEnumerator Score()
     {
         txt.color = new Color(1, 1, 1, 1);
         txt.text = enomyScore + " : " + playerScore;

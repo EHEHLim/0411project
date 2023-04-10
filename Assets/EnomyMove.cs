@@ -16,15 +16,18 @@ public class EnomyMove : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if (ball.GetComponent<Ball>().direction == 1 && GameObject.Find("GameManager").GetComponent<GameManager>().canSetStart == false)
+        if(GameManager.Instance.canSetStart == false)
         {
-            if (ball.GetComponent<Transform>().position.y > transform.position.y)
+            if (ball.GetComponent<Ball>().direction == 1 && GameManager.Instance.canSetStart == false)
             {
-                transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
-            }
-            else
-            {
-                transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                if (ball.GetComponent<Transform>().position.y > transform.position.y)
+                {
+                    transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                }
+                else
+                {
+                    transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                }
             }
         }
     }

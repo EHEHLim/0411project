@@ -546,6 +546,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tmp: {fileID: 1305915336}
+  r: 0
+  g: 0
+  b: 0
 --- !u!1 &1655702082
 GameObject:
   m_ObjectHideFlags: 0

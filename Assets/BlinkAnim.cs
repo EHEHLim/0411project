@@ -7,16 +7,19 @@ public class BlinkAnim : MonoBehaviour
 {
     float time;
     public TextMeshProUGUI tmp;
+    public float r;
+    public float g;
+    public float b;
     // Update is called once per frame
     void Update()
     {
         if (time < 0.5f)
         {
-            tmp.color = new Color(0, 0, 0, 1 - time);
+            tmp.color = new Color(r, g, b, 1 - time);
         }
         else
         {
-            tmp.color = new Color(0, 0, 0, time) ;
+            tmp.color = new Color(r, g, b, time) ;
             if(time > 1f)
             {
                 time = 0;
